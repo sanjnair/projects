@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">Melange</string>
+
+    <string name="spinner_login">Login Spinner</string>
+    <string name="title_activity_main">Melange Music Learning</string>
+    <string name="title_activity_login">Melange</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="navigation_menu_lessons">Lessons</string>
+    <string name="navigation_menu_sync">Sync Backend</string>
+    <string name="navigation_menu_logout">Logout</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- ACTIVITY Labels ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="activity_lesson_detail">Lesson Details</string>
+    <string name="activity_lesson_resources">Lesson Resources</string>
+
+
+    <string name="lesson_detail_resources">Resources</string>
+
+    <!--KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="key_shared_preferences">com.xmatrix.melange.key_shared_preferences</string>
+    <string name="key_user_email">key_user_email</string>
+    <string name="key_selected_drawer_item_id">key_selected_drawer_item_id</string>
+
+
+    <!--ACCOUNTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="content_authority">com.xmatrix.melange</string>
+    <string name="sync_account_type">melanage.xmatrix.com</string>
+    <string name="sync_account_password">dummy</string>
+
+    <!-- ERROR STRINGS -->
+    <string name="err_invalid_provider_uri">Invalid Provider URI : </string>
+    <string name="err_insertion_failed">Unable to insert data for URI : </string>
+    <string name="err_audio__play">"Unable to play audio</string>
+
+    <string name="no_lessons_found">No lessons found</string>
+    <string name="no_lessons_no_network">No lessons found. Unable to connect to network.</string>
+    <string name="no_lessons_syncing">No lessons found. Syncing with backend to load data.</string>
+
+    <!-- MESSAGES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="audio_play_message">Streaming Audio. Click again to stop</string>
+
+    <!-- TEXT for Trackers -->
+    <string name="tracker_login">Melange Login</string>
+    <string name="tracker_lessons">Melange Lesson List</string>
+    <string name="tracker_lesson_detail">Melange Lesson Detail</string>
+
+    <string name="dummy">Dummy</string>
+
+    <!-- Widget ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="widget_label">Lesson Summary</string>
+    <string name="widget_action">com.xmatrix.melange.WIDGET_ACTION</string>
+    <string name="widget_lessons_completed">Completed</string>
+    <string name="widget_lessons_pending">Pending</string>
+
+    <!-- Descriptions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="desc_login_button">Login With Google</string>
+    <string name="desc_lessons_not_found">Not Found</string>
+    <string name="desc_lessons_image">Lesson Image</string>
+    <string name="desc_lessons_name">Lesson Name</string>
+    <string name="desc_lessons_date">Lesson Date</string>
+
+    <string name="desc_lesson_detail_name">Name</string>
+    <string name="desc_lesson_detail_ragam">Ragam</string>
+    <string name="desc_lesson_detail_arohana">Arohana</string>
+    <string name="desc_lesson_detail_avarohana">Avarohana</string>
+    <string name="desc_lesson_detail_melakartha">Melakartha</string>
+    <string name="desc_lesson_detail_thala">Thala</string>
+    <string name="desc_lesson_detail_author">Author</string>
+    <string name="desc_lesson_detail_resources">Resources</string>
+    <string name="desc_lesson_detail_description">Description</string>
+
+    <string name="desc_lesson_res_notification">Notification</string>
+    <string name="desc_lesson_res_image">Image</string>
+    <string name="desc_lesson_res_description">Description</string>
+
+    <string name="desc_widget_image">Image</string>
+    <string name="desc_widget_completed">Lessons Completed</string>
+    <string name="desc_widget_pending">Lessons Pending</string>
+
+    <string name="desc_nav_header_user_image">User Image</string>
+    <string name="desc_nav_header_user_name">User Image</string>
+    <string name="desc_nav_header_user_email">User Image</string>
+
+</resources>

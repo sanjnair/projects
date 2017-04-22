@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "34053092298",
+    "project_id": "melanage-890aa"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34053092298:android:057e9cc4f8fe92d0",
+        "android_client_info": {
+        "package_name": "com.xmatrix.melange"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34053092298-i6aslium3k91t4b1bscrpejcb6e4s4co.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+          "package_name": "com.xmatrix.melange",
+          "certificate_hash": "F4B8F56B96C35F1242E4236A521316E13ADAB5F5"
+          }
+        },
+        {
+          "client_id": "34053092298-gnah0rd6c0m4b0nm4rh247c8gl6925ll.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb2XjbG9QhkL3Fxf2Cqk9-r5DUqwgd5QQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

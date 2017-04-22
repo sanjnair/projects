@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".MovieListFragment"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:background="@android:color/white"
+    >
+
+    <TextView
+        android:id="@+id/movie_notificationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_movies_found"
+        android:visibility="invisible"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:contentDescription="@string/desc_movies_not_found"
+        />
+
+    <!--<android.support.v7.widget.RecyclerView-->
+    <xmatrix.com.movies.AutofitRecyclerView
+        android:id="@+id/movie_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:columnWidth="@dimen/column_width"
+        />
+
+    <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/load_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="true"
+        android:visibility="gone"
+        />
+
+</FrameLayout>

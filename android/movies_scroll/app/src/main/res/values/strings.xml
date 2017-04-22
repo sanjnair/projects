@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Movies</string>
+    <string name="spinner_login">Login Spinner</string>
+
+    <!-- Descriptions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="desc_login_button">Login With Google</string>
+
+    <!--KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="key_shared_preferences">cxmatrix.com.movies.key_shared_preferences</string>
+    <string name="key_user_email">key_user_email</string>
+    <string name="key_selected_drawer_item_id">key_selected_drawer_item_id</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!--NAVIGATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="nav_top_rated_movies">Top Rated Movies</string>
+    <string name="nav_popular_movies">Popular Movies</string>
+    <string name="nav_now_playing_movies">Now Playing Movies</string>
+    <string name="nav_upcoming_movies">Upcoming Movies</string>
+    <string name="nav_favorite_movies">Favorite Movies</string>
+    <string name="nav_logout">Logout</string>
+
+    <string name="desc_nav_header_user_image">User Image</string>
+    <string name="desc_nav_header_user_name">User Image</string>
+    <string name="desc_nav_header_user_email">User Image</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--DESC ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="no_movies_found">No movies found</string>
+    <string name="no_movies_no_network">No movies found. Unable to connect to network.</string>
+    <string name="no_movies_syncing">No movies found. Syncing with backend to load movies.</string>
+    <string name="desc_movies_not_found">Unable to find movies for the selected category</string>
+    <string name="desc_movie_list_image">Movie list image</string>
+
+
+    <!--SETTINGS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <string name="action_settings">Settings</string>
+
+</resources>

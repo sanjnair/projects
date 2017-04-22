@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LessonsFragment"
+    >
+
+    <TextView
+        android:id="@+id/lesson_notificationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_lessons_found"
+        android:visibility="invisible"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:contentDescription="@string/desc_lessons_not_found"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lesson_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+</FrameLayout>

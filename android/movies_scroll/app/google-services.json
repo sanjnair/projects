@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "947568028038",
+    "project_id": "movies-9a33f"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947568028038:android:cfb05de03a4b8368",
+        "android_client_info": {
+          "package_name": "xmatrix.com.movies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947568028038-bi3002e65emlescu5l4o2dpc76ctt5kh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "xmatrix.com.movies",
+            "certificate_hash": "1062DF6CFA2B8EDE2CD0A0C49AF5CF1E6929BE1B"
+          }
+        },
+        {
+          "client_id": "947568028038-c52ii50dubirq9m8t5qo6i8e8b36l4gj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApTAcn8apdBMFL1KcRNDUm5ssKECtwetQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

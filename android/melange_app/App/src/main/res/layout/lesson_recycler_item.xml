@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lesson_recycler_item_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_row_selector"
+    android:orientation="horizontal"
+    android:padding="@dimen/lesson_list_margin"
+    android:contentDescription=""
+    >
+
+    <LinearLayout
+        android:id="@+id/lessons_thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/list_row_image_bg"
+        android:layout_marginEnd="@dimen/lesson_list_margin">
+
+        <ImageView
+            android:id="@+id/lesson_image"
+            android:layout_width="@dimen/lesson_image_thumbnail_max_width"
+            android:layout_height="@dimen/lesson_image_thumbnail_max_height"
+            android:contentDescription="@string/desc_lessons_image"
+        />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lesson_name"
+        android:layout_toEndOf="@+id/lessons_thumbnail"
+        android:layout_alignParentTop="true"
+        android:textSize="@dimen/lesson_detail_header_size"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        android:contentDescription="@string/desc_lessons_name"
+        />
+
+    <TextView
+        android:layout_below="@+id/lesson_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lesson_date"
+        android:layout_toEndOf="@+id/lessons_thumbnail"
+        android:textColor="@color/primary_text"
+        android:contentDescription="@string/desc_lessons_date"
+        />
+</RelativeLayout>

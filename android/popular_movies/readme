@@ -1,0 +1,19 @@
+Popular Movies App - Part 2
+----------------------------
+Implemented all basic functionalities. 
+
+API_KEY
+-------
+Please provide API key inside MainActivityFragment.java file
+private final String API_KEY    ="";                            // ADD YOUR API KEY HERE
+
+
+Things to do
+------------
+Support for storing trailer information and review information inside DB.
+
+Known issues
+------------
+UI issues when including a list view inside a scroll view.
+
+

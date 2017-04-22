@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="action_settings">Settings</string>
+    <string name="main_grid_view">MainGridView</string>
+    <string name="title_activity_detail">Movie Details</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+    <string name="review_more_info">Review on web</string>
+    <string name="no_movies">Movies are not available</string>
+    <string name="btn_mark_favorite">MARK AS FAVORITE</string>
+    <string name="btn_unmark_favorite">UNMARK AS FAVORITE</string>
+    <string name="share">Share</string>
+</resources>

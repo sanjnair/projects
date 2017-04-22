@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Jokeslib</string>
+    <string name="unable_to_fetch">Unable to fetch Joke from library</string>
+</resources>

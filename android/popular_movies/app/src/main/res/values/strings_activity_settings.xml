@@ -1,0 +1,31 @@
+<resources>
+
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+    <string name="pref_header_general">General</string>
+    <string name="pref_title_sort_order">Sort movies by</string>
+
+    <string name="pref_sort_order_most_popular">Most Popular</string>
+    <string name="pref_sort_order_highest_rated">Highest Rated</string>
+    <string name="pref_sort_order_favorite">Favorites</string>
+
+    <string name="pref_sort_order_most_popular_val">0</string>
+    <string name="pref_sort_order_highest_rated_val">1</string>
+    <string name="pref_sort_order_favorites_val">2</string>
+
+    <string-array name="pref_sort_order_entries">
+        <item>@string/pref_sort_order_most_popular</item>
+        <item>@string/pref_sort_order_highest_rated</item>
+        <item>@string/pref_sort_order_favorite</item>
+    </string-array>
+
+    <string-array name="pref_sort_order_values" translatable="false">
+        <item>@string/pref_sort_order_most_popular_val</item>
+        <item>@string/pref_sort_order_highest_rated_val</item>
+        <item>@string/pref_sort_order_favorites_val</item>
+    </string-array>
+
+    <string name="pref_sort_order_key" translatable="false">sort_order</string>
+    <string name="pref_sort_order_default" translatable="false">@string/pref_sort_order_most_popular_val</string>
+</resources>

@@ -1,0 +1,113 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top layout -->
+    <LinearLayout
+        android:id="@+id/id_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <!-- League layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/widget_margin"
+            android:background="@color/blue01"
+            >
+
+            <!-- League name -->
+            <TextView
+                android:id="@+id/league_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:text="@string/test_text"
+                android:textSize="@dimen/League"
+                android:paddingRight="@dimen/widget_margin"
+                />
+
+            <TextView
+                android:id="@+id/match_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:text="@string/test_text"
+                android:textSize="@dimen/League" />
+        </LinearLayout>
+
+        <!-- Bottom layout -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/green03"
+            >
+
+            <!-- Home Team -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingRight="@dimen/widget_margin"
+                >
+
+                <TextView
+                    android:id="@+id/home_team"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:text="@string/test_text"
+                    android:textSize="@dimen/TeamNames"
+                    android:paddingBottom="@dimen/widget_margin"
+                    />
+
+                <TextView
+                    android:id="@+id/away_team"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:text="@string/test_text"
+                    android:textSize="@dimen/TeamNames"
+                    />
+            </LinearLayout>
+
+            <!-- Away Team -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/home_team_Score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:text="@string/test_text"
+                    android:textSize="@dimen/TeamNames"
+                    android:paddingBottom="@dimen/widget_margin"
+                    />
+
+                <TextView
+                    android:id="@+id/away_team_Score"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:text="@string/test_text"
+                    android:textSize="@dimen/TeamNames" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

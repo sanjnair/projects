@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/text_margin"
+    android:orientation="vertical"
+    android:background="@color/blue01"
+    tools:context="com.xmatrix.jokeslib.JokesActivity"
+    >
+
+    <TextView
+        android:id="@+id/joke"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:text="@string/unable_to_fetch"
+        android:paddingBottom="@dimen/text_margin"
+        android:textStyle="bold|italic"
+        />
+
+</LinearLayout>

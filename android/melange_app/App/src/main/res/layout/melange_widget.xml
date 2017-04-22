@@ -1,0 +1,84 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_widget_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <GridLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:useDefaultMargins="true"
+        android:alignmentMode="alignBounds"
+        android:columnOrderPreserved="false"
+        android:columnCount="3"
+        android:rowCount="2"
+        android:layout_gravity="center"
+        android:background="@drawable/border"
+        >
+
+        <ImageView
+            android:id="@+id/id_widget_image"
+            android:layout_width="@dimen/widget_image_max_width"
+            android:layout_height="@dimen/widget_image_max_width"
+            android:src="@drawable/melange"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_rowSpan="2"
+            android:paddingEnd="@dimen/widget_margin"
+            android:contentDescription="@string/desc_widget_image"
+            />
+
+        <TextView
+            android:id="@+id/id_widget_lessons_completed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_green_dark"
+            android:text = "-"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/widget_number_size"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:contentDescription="@string/desc_widget_completed"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/widget_lessons_completed"
+            android:textColor="@color/primary_text"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/widget_text_size"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:contentDescription="@string/desc_widget_completed"
+            />
+
+        <TextView
+            android:id="@+id/id_widget_pending_lessons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_dark"
+            android:text = "-"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/widget_number_size"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:contentDescription="@string/desc_widget_pending"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/widget_lessons_pending"
+            android:textColor="@color/primary_text"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/widget_text_size"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:contentDescription="@string/desc_widget_pending"
+            />
+    </GridLayout>
+
+</RelativeLayout>
