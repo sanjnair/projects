@@ -1,0 +1,168 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw4
+  
+echo "=========================================="
+echo "(G1)"
+echo -n "press <CR> to continue..."
+set foo=$<
+clear
+echo "=========================================="
+
+#
+# (G1)
+# for the following commands, each correct answer gets 1 point
+# please use "yesnomaybe" as the passphrase for all tests here
+#
+# after "vi" is launched, type the following in "vi":
+#     :r fin
+#     :wq
+#
+setenv EDITOR vi
+/bin/rm -f f??.edit fin
+foreach f (10 11 12 13 14)
+  echo "===> $srcdir/f$f"
+  cp $srcdir/f$f fin
+  ./hw4 edit -so=./libhw4sc.so f$f.edit
+  /bin/rm -f fin
+end
+#
+# "diff" command below should produce nothing
+#
+foreach f (10 11 12 13 14)
+  diff $srcdir/f$f.edit f$f.edit
+end
+
+#
+# make sure that when you get into the editor, you see
+# readable text strings; type the following in "vi":
+#     :q
+# please use "yesnomaybe" as the passphrase for all tests here
+#
+foreach f (10 11 12 13 14)
+  ./hw4 edit -so=./libhw4sc.so f$f.edit
+  diff $srcdir/f$f.edit f$f.edit
+  echo "make sure there's no difference above "
+  echo -n "press <CR> to continue..."
+  set foo=$<
+  clear
+end
+
+echo "=========================================="
+echo "(G2)"
+echo -n "press <CR> to continue..."
+set foo=$<
+clear
+echo "=========================================="
+#
+# (G2)
+# for the following commands, each correct answer gets 1 point
+# make sure that when you get into the editor, you see
+# readable text strings; type the following in "vi":
+#     dd
+#     :wq
+# please use "yesnomaybe" as the passphrase for all tests here
+#
+/bin/rm -f f??.1 f??.2
+foreach f (10 11 12 13 14)
+  ./hw4 edit -so=./libhw4sc.so f$f.edit
+  ~csci530/bin/hexdump $srcdir/f$f.edit | head > f$f.1
+  ~csci530/bin/hexdump f$f.edit | head > f$f.2
+  diff f$f.1 f$f.2
+  echo "make sure there's a difference above "
+  echo -n "press <CR> to continue..."
+  set foo=$<
+  clear
+end
+
+
+echo "=========================================="
+echo "(G3)"
+echo -n "press <CR> to continue..."
+set foo=$<
+clear
+echo "=========================================="
+
+#
+# (G3)
+# for the following commands, each correct answer gets 1 point
+# make sure that when you get into the editor, you see
+# readable text strings; type the following in "vi" (the first
+# command is a capital o followed by pressing the <ESC> key)
+#     O<ESC>
+#     :wq
+# this should restore the datafile back to what it was
+# please use "yesnomaybe" as the passphrase for all tests here
+#
+/bin/rm -f f??.1 f??.2
+foreach f (10 11 12 13 14)
+  ./hw4 edit -so=./libhw4sc.so f$f.edit
+  ~csci530/bin/hexdump $srcdir/f$f.edit | head > f$f.1
+  ~csci530/bin/hexdump f$f.edit | head > f$f.2
+  diff f$f.1 f$f.2
+  echo "make sure there's no difference above "
+  echo -n "press <CR> to continue..."
+  set foo=$<
+  clear
+end
+/bin/rm -f f??.1 f??.2
+/bin/rm -f f??.edit
+
+echo "=========================================="
+echo "(G4)"
+echo -n "press <CR> to continue..."
+set foo=$<
+clear
+echo "=========================================="
+
+
+#
+# (G4)
+# for the following commands, each correct answer gets 1 point
+# use randomly generated "secret.c"
+#
+# please use "yesnomaybe" as the passphrase for all tests here
+#
+# after "vi" is launched, type the following in "vi":
+#     :r fin
+#     :wq
+#
+/bin/rm -f f??.edit
+/bin/rm -f f??.1 f??.2
+foreach f (10 11 12 13 14)
+  echo "===> $srcdir/f$f"
+  /bin/rm -f secret.c
+  cp secret.c.$f secret.c
+  /bin/rm -f *.o
+  make clean
+  make smartcard
+  make hw4
+  cp $srcdir/f$f fin
+  ./hw4 edit -so=./libhw4sc.so f$f.edit
+  /bin/rm -f fin
+  ~csci530/bin/hexdump $srcdir/f$f.edit | head > f$f.1
+  ~csci530/bin/hexdump f$f.edit | head > f$f.2
+end
+#
+# "diff" command below should output some difference
+#
+foreach f (10 11 12 13 14)
+  echo "===> $srcdir/f$f"
+  diff f$f.1 f$f.2
+  echo "make sure there's a difference above "
+  echo -n "press <CR> to continue..."
+  set foo=$<
+  clear
+  end
+#
+/bin/rm -f f??.1 f??.2
+/bin/rm -f f??.edit
+/bin/rm -f secret.c
+cp ~csci530/public/hw4/secret.c .
+/bin/rm -f *.o
+make clean
+make smartcard
+make hw4
+/bin/rm -f f?.dat f?.enc
+
+

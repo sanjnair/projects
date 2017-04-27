@@ -1,0 +1,27 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw4
+set testdir=tempdir
+
+if(-d $testdir) then
+  /bin/rm -rf $testdir
+endif
+
+mkdir $testdir
+cp test* $testdir
+
+./build
+
+cd $testdir
+gunzip -c ../hw4.tar.gz > hw4.tar
+tar xvf hw4.tar
+make smartcard
+make hw4
+
+./test_all
+
+make clean
+
+cd ..
+/bin/rm -rf $testdir
+

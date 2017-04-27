@@ -1,0 +1,13 @@
+#! /bin/csh
+
+foreach file (`ls ./*.cc ./*.h ./*.c`)
+  if (-d $file) then
+    #do not do any thing
+  else if( $file == "./clean" ) then
+   #do not do any thing
+  else
+    echo "running dos2unix on $file"
+    /usr/bin/dos2unix $file $file
+  endif
+end
+

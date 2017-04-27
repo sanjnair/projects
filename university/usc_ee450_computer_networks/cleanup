@@ -1,0 +1,10 @@
+#! /bin/csh
+
+foreach file(./*.cpp)
+  set newfile=`echo $file|sed -n s/cpp/cc/p`
+ echo "renaming $file with $newfile"
+ mv $file $newfile
+end
+
+./d2unix
+

@@ -1,0 +1,44 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw2
+
+#--------------------------------------------------------
+
+#
+# for the following commands, each correct answer gets 1 point
+# please use "yesnomaybe" as the passphrase for all tests here
+#
+
+echo "---------------------------"
+echo "password --> yesnomaybe"
+echo "---------------------------"
+
+foreach f (0 1 2 3 4 5 6 7 8 9)
+    echo "===> $srcdir/f$f"
+    ./hw2 dec-des $srcdir/f$f.des.1 > f$f.dat
+    diff $srcdir/f$f f$f.dat
+end
+
+#--------------------------------------------------------
+/bin/rm -f f?.dat
+#--------------------------------------------------------
+
+#
+# for the following commands, each correct answer gets 1 point
+# please use "tomorrow" as the passphrase for all tests here
+#
+
+echo "---------------------------"
+echo "password --> tomorrow"
+echo "---------------------------"
+
+foreach f (0 1 2 3 4 5 6 7 8 9)
+    echo "===> $srcdir/f$f"
+    ./hw2 dec-des $srcdir/f$f.des.2 > f$f.dat
+    diff $srcdir/f$f f$f.dat
+end
+
+#--------------------------------------------------------
+/bin/rm -f f?.dat
+#--------------------------------------------------------
+

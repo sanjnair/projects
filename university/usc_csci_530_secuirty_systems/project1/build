@@ -1,0 +1,5 @@
+#!/bin/csh -f
+
+tar cvf hw1.tar Makefile README *.cc *.h
+gzip hw1.tar
+

@@ -1,0 +1,26 @@
+ 
+Project 3
+ 
+***********************************
+Name: Sanjay Nair
+id  : 61388
+***********************************
+
+Compilation Instructions
+---------------------------
+1. unzip Project3.tar.gz file (gunzip Project3.tar.gz)
+2. Untar Project2.tar file    (tar -xvf Project3.tar)
+3. Change directory to Project3
+3. Read the readme file
+4. run gmake on Project3 directory.
+
+Testing instructions
+--------------------
+1. Running gmake on the Project3 creates an executable named prj2 
+2. Run prj3  by
+   prj3  test0#_041su.init /dev/null > test#.init (where # is the test number).
+3. use diff -w -b  test#.init test0#_043su to see the differences.
+
+Please let me know if you've any quesions.
+sanjay_sn@usc.edu
+

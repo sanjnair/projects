@@ -1,0 +1,14 @@
+#!/bin/csh -f
+
+set TAR_FILE=warmup2.tar
+
+if(-f $TAR_FILE) then
+  /bin/rm -rf $TAR_FILE
+endif
+
+make clean
+make
+
+tar cvf $TAR_FILE Makefile README *.c *.cc *.h
+gzip $TAR_FILE
+

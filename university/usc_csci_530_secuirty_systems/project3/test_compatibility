@@ -1,0 +1,89 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw4
+
+/bin/rm -f libhw4sc.so
+cp ~csci530/public/hw4/libhw9sc.so libhw4sc.so
+chmod 755 libhw4sc.so
+
+echo "====================================="
+echo "(A1)"
+echo "====================================="
+
+#
+# please use "yesnomaybe" as the passphrase (except where noted)
+# "diff" command should produce nothing
+# if a segmentation fault occurs here, do not count as
+#     segmentation fault (i.e., if all tests above do not
+#     create segmentation faults, do not take 10 points off)
+#
+# (A1)
+./hw4 sign -so=./libhw4sc.so $srcdir/f0 >! f0.sign
+diff $srcdir/f0.sign f0.sign
+
+echo "====================================="
+echo "(B1)"
+echo "====================================="
+
+# (B1)
+./hw4 verify -so=./libhw4sc.so $srcdir/f0.sign >! f0.verify
+diff $srcdir/f0.verify f0.verify
+
+echo "====================================="
+echo "(C1)"
+echo "====================================="
+
+# (C1)
+./hw4 sign -so=./libhw4sc.so $srcdir/f1 | \
+./hw4 verify -so=./libhw4sc.so >! f1.verify
+diff $srcdir/f1.verify f1.verify
+
+echo "====================================="
+echo "(D1)"
+echo "====================================="
+
+# (D1)
+./hw4 enc -so=./libhw4sc.so $srcdir/f2 >! f2.enc
+diff $srcdir/f2.1.enc f2.enc
+
+echo "====================================="
+echo "(E1)"
+echo "====================================="
+
+# (E1)
+./hw4 dec -so=./libhw4sc.so $srcdir/f3.1.enc >! f3.dat
+diff $srcdir/f3 f3.dat
+
+echo "====================================="
+echo "(F1)"
+echo "====================================="
+
+# (F1) - please use "yesterday" as the passphrase here
+./hw4 enc -so=./libhw4sc.so $srcdir/f4 >! f4.enc
+./hw4 dec -so=./libhw4sc.so f4.enc >! f4.dat
+diff $srcdir/f4 f4.dat
+
+echo "====================================="
+echo "(G1)"
+echo "====================================="
+
+# (G1)
+# after "vi" is launched, type the following in "vi":
+#     :r f10
+#     :wq
+#
+setenv EDITOR vi
+/bin/rm -f f10.edit
+cp $srcdir/f10 .
+./hw4 edit -so=./libhw4sc.so f10.edit
+/bin/rm -f f10
+diff $srcdir/f10.edit f10.edit
+#
+/bin/rm -f f?.sign f?.verify f?.enc f?.hex f?.dat
+/bin/rm -f libhw4sc.so
+/bin/rm -f *.o
+make clean
+make smartcard
+make hw4
+
+

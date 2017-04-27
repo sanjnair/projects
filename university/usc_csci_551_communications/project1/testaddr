@@ -1,0 +1,15 @@
+#!/bin/csh -f
+
+set port=13212
+
+# run the commands in another window
+./client -a nunki.usc.edu:$port www.cs.usc.edu
+./client -a localhost:$port pollux.usc.edu
+./client -a localhost:$port www.cs.usc.edu
+./client -a localhost:$port hotmail.com
+./client -a localhost:$port adsl-69-108-110-53.dsl.irvnca.pacbell.net
+./client -a localhost:$port 24.126.245.103
+./client -a localhost:$port no.such.edu
+./client -a nunki.usc.edu:$port www.cs.usc.xx
+
+

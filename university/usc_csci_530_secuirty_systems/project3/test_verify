@@ -1,0 +1,30 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw4
+
+#
+# (B1)
+# for the following commands, each correct answer gets 1 point
+# "diff" command should produce nothing
+#
+/bin/rm -f f?.verify
+foreach f (0 1 2 3 4 5 6 7 8 9)
+  echo "===> $srcdir/f$f"
+  ./hw4 verify -so=./libhw4sc.so $srcdir/f$f.sign > f$f.verify
+  diff $srcdir/f$f.verify f$f.verify
+end
+/bin/rm -f f?.verify
+#
+# (B2)
+# for the following commands, each correct answer gets 1 point
+# "diff" command should produce nothing
+#
+foreach f (0 2 4 6 8)
+  echo "===> $srcdir/f$f"
+  cat $srcdir/f$f.sign | \
+  ./hw4 verify -so=./libhw4sc.so > f$f.verify
+  diff $srcdir/f$f.verify f$f.verify
+end
+/bin/rm -f f?.verify
+
+

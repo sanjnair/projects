@@ -1,0 +1,25 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw2
+
+#--------------------------------------------------------
+
+#
+# for the following commands, each correct answer gets 1 point
+# please use "yesterday" as the passphrase for all tests here
+#
+echo "---------------------------"
+echo "password --> yesterday"
+echo "---------------------------"
+
+foreach f (0 1 2 3 4 5 6 7 8 9)
+    echo "===> $srcdir/f$f"
+    ./hw2 enc-des $srcdir/f$f > f$f.des
+    ./hw2 dec-des f$f.des > f$f.dat
+    diff $srcdir/f$f f$f.dat
+end
+
+#--------------------------------------------------------
+/bin/rm -f f?.dat f?.des
+#--------------------------------------------------------
+

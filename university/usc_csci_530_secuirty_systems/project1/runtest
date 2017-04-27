@@ -1,0 +1,29 @@
+#!/bin/csh -f
+
+echo "======================="
+echo "running hex test"
+echo "======================="
+./testhex
+
+echo "======================="
+echo "running enc test"
+echo "======================="
+./testenc
+
+echo "======================="
+echo "running dec test"
+echo "======================="
+./testdec
+
+echo "======================="
+echo "running enc-dec test"
+echo "======================="
+./testencdec
+
+echo "======================="
+echo "running bad test"
+echo "======================="
+./testbad
+
+
+

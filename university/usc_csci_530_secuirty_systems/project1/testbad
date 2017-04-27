@@ -1,0 +1,8 @@
+#!/bin/csh -f
+
+set srcdir=/auto/home-scf-22/csci530/public/hw1
+
+./hw1 dec-base64 $srcdir/f200.b64
+./hw1 dec-base64 $srcdir/f201.b64
+./hw1 dec-base64 $srcdir/f202.b64 > /dev/null
+

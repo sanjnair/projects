@@ -1,0 +1,26 @@
+ 
+Project 4
+ 
+***********************************
+Name: Sanjay Nair
+id  : 61388
+***********************************
+
+Compilation Instructions
+---------------------------
+1. unzip Project4.tar.gz file (gunzip Project4.tar.gz)
+2. Untar Project4.tar file    (tar -xvf Project4.tar)
+4. Change directory to Project4
+4. Read the readme file
+5. run gmake on Project4 directory.
+
+Testing instructions
+--------------------
+1. Running gmake on the Project4 creates an executable named prj4 
+2. Run prj4  by
+   prj4  test0#_041su.init /dev/null > test#.init (where # is the test number).
+3. use diff -w -b  test#.init test0#_044 to see the differences.
+
+Please let me know if you've any quesions.
+sanjay_sn@usc.edu
+

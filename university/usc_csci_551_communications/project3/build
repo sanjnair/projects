@@ -1,0 +1,19 @@
+#!/bin/csh -f
+
+set TAR_FILE=final2.tar
+
+if(-f $TAR_FILE) then
+  /bin/rm -rf $TAR_FILE
+endif
+
+if(-f $TAR_FILE.gz) then
+  /bin/rm -rf $TAR_FILE.gz
+endif
+
+make clean
+make
+make clean
+
+tar cvf $TAR_FILE Makefile README *.c *.cc *.h
+gzip $TAR_FILE
+

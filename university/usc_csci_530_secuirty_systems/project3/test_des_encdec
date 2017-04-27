@@ -1,0 +1,83 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw4
+
+#
+# (F1)
+# for the following commands, each correct answer gets 1 point
+# please use "yesterday" as the passphrase for all tests here
+# "diff" command should produce nothing
+#
+/bin/rm -f f?.dat f?.enc
+
+echo "----------------------------------------------"
+echo "passphrase = yesterday"
+echo "----------------------------------------------"
+
+foreach f (0 1 2 3 4 5 6 7 8 9)
+  echo "===> $srcdir/f$f"
+  ./hw4 enc -so=./libhw4sc.so $srcdir/f$f > f$f.enc
+  ./hw4 dec -so=./libhw4sc.so f$f.enc > f$f.dat
+  diff $srcdir/f$f f$f.dat
+end
+
+#
+# (F2)
+# for the following commands, each correct answer gets 1 point
+# use randomly generated "secret.c"
+#
+# please use "yesnomaybe" as the passphrase for all tests here
+#
+/bin/rm -f f?.dat f?.enc
+
+echo "----------------------------------------------"
+echo "passphrase = yesnomaybe"
+echo "----------------------------------------------"
+
+foreach f (0 2 4 6 8)
+  echo "===> $srcdir/f$f"
+  /bin/rm -f secret.c
+  cp secret.c.$f secret.c
+  /bin/rm -f *.o
+  make clean
+  make smartcard
+  make hw4
+  ./hw4 enc -so=./libhw4sc.so $srcdir/f$f > f$f.enc
+  ./hw4 dec -so=./libhw4sc.so f$f.enc > f$f.dat
+  echo "----------------------------------------------------"
+  echo "---> diff $srcdir/f$f f$f.dat"
+  diff $srcdir/f$f f$f.dat
+  echo "make sure there's no difference above "
+  echo -n "press <CR> to continue..."
+  set foo=$<
+  clear
+end
+
+#
+# make sure the encrypted files are different from what's
+# in $srcdir, if any of these files are the same as what's
+# in $srcdir, the tests in (F2) were invalid and a total of
+# zero point should be given to (F2)
+#
+/bin/rm -f f?.1 f?.2
+foreach f (0 2 4 6 8)
+  echo "===> $srcdir/f$f"
+  ~csci530/bin/hexdump $srcdir/f$f.1.enc | head > f$f.1
+  ~csci530/bin/hexdump f$f.enc | head > f$f.2
+  diff f$f.1 f$f.2
+  echo "make sure there's a difference above "
+  echo -n "press <CR> to continue..."
+  set foo=$<
+  clear
+end
+
+/bin/rm -f f?.1 f?.2
+/bin/rm -f f?.dat f?.enc
+/bin/rm -f secret.c
+cp ~csci530/public/hw4/secret.c .
+/bin/rm -f *.o
+make clean
+make smartcard
+make hw4
+/bin/rm -f f?.dat f?.enc
+

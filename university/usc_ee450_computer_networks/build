@@ -1,0 +1,12 @@
+#!/bin/csh -f
+
+if(-f nairsanjay.tar) then
+  /bin/rm -rf nairsanjay.tar
+endif
+
+make clean
+make 
+
+tar cvf nairsanjay.tar Makefile README login *.cc *.h
+gzip nairsanjay.tar
+

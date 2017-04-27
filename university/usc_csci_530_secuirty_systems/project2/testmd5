@@ -1,0 +1,20 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw2
+
+foreach f ( 0 1 2 3 4 5 6 )
+  echo "===> $srcdir/f$f"
+  ./hw2 md5 $srcdir/f$f > f$f.md5
+  diff $srcdir/f$f.md5 f$f.md5
+end
+
+/bin/rm -f f*.md5
+
+foreach f ( 7 8 9 )
+  echo "===> $srcdir/f$f"
+  cat $srcdir/f$f | ./hw2 md5 > f$f.md5
+  diff $srcdir/f$f.md5 f$f.md5
+end
+
+/bin/rm -f f*.md5
+

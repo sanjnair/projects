@@ -1,0 +1,370 @@
+/***************************************************************************
+**    Sun Aug 27 2006
+**    (C) 2006 by Sanjay Nair
+**    sanjaysn <at> usc <dot> edu
+****************************************************************************/
+
+#include <assert.h>
+#include "cutil.h"
+#include "cexception.h"
+#include "cmm2.h"
+
+#define round(X) (((X)>= 0)?(int)((X)+0.5):(int)((X)-0.5))
+                                                   
+/*!
+  Gets the singleton instance
+*/
+CMm2* CMm2::getInstance()
+{
+  if (NULL == _instance) {
+    _instance = new CMm2();
+    assert(_instance);
+  }
+  return _instance;
+}
+
+/*!
+  Releases the singleton instance
+*/
+void CMm2::releaseInstance()
+{
+  if (NULL != _instance) {
+    delete _instance;
+    _instance = NULL;
+  }
+}
+
+/*!
+  Constructs the MM2
+*/
+CMm2::CMm2() :
+  _stopFlag(false), _initThreadBlocked(false), _arrival(NULL), _s1(NULL), _s2(NULL) {}
+
+/*!
+  Deletes the MM2
+*/
+CMm2::~CMm2()
+{
+  cleanup();
+}
+
+CMm2::CMm2(const CMm2 &other) {}
+
+CMm2& CMm2::operator=(const CMm2 &other)
+{
+  return *this;
+}
+
+/*!
+  Cleanup
+*/
+void CMm2::cleanup()
+{
+  if (NULL != _arrival) {
+    delete _arrival;
+    _arrival = NULL;
+  }
+  if (NULL != _s1) {
+    delete _s1;
+    _s1 = NULL;
+  }
+  if (NULL != _s2) {
+    delete _s2;
+    _s2 = NULL;
+  }
+}
+
+/*!
+  Returns Lambda
+*/
+double CMm2::getLambda() const
+{
+  return _lambda;
+}
+
+/*!
+  Returns Mu
+*/
+double CMm2::getMu() const
+{
+  return _mu;
+}
+
+/*!
+  Returns seed
+*/
+long CMm2::getSeed() const
+{
+  return _seed;
+}
+
+/*!
+  Returns Queue size
+*/
+uint CMm2::getQSize() const
+{
+  return _qsize;
+}
+
+/*!
+  Returns number of customers
+*/
+uint CMm2::getNumCustomer() const
+{
+  return _ncustomer;
+}
+
+/*!
+  Returns Distribution type
+*/
+DistType CMm2::getDistType() const
+{
+  return _dtype;
+}
+
+/*!
+  Returns true, if single server is enabled
+*/
+bool CMm2::isSingleServer() const
+{
+  return _singleserver;
+}
+
+/*!
+  Starts Mm2
+*/
+void CMm2::start(
+    double lambda, double mu, long seed, uint qsize,
+    uint ncustomer, DistType dtype, bool singleserver)
+{
+    _lambda= lambda;
+    _mu = mu;
+    _seed = seed;
+    _qsize = qsize;
+    _ncustomer = ncustomer;
+    _dtype = dtype;
+    _singleserver = singleserver;
+
+    startSimulation();
+}
+      
+void CMm2::stop()
+{
+  CMutexLocker m(&_mutex);
+  _stopFlag = true;
+
+  if (NULL != _arrival) {
+    _arrival->stop();
+  }
+  if (NULL != _s1) {
+    _s1->stop();
+  }
+  if (NULL != _s2) {
+    _s2->stop();
+  }
+}
+
+/*!
+  Prints the timeline
+*/
+void CMm2::printTimeline(long sTime, long eTime, const string &msg)
+{
+  long dTime = eTime - sTime;
+  long decimal = (long)(dTime/1000);
+  long fraction = dTime - (1000 * decimal);
+
+  fprintf(stdout, "%08d.%03dms: %s\n",
+    (int)decimal, (int)fraction, msg.c_str());
+}
+
+/*!
+  Starts the simulation
+*/
+void CMm2::startSimulation()
+{
+    printParams();
+    initRandom(_seed);
+    initSignalMask();
+
+    _s1 = new CMserver(1, this);
+    assert(_s1);
+
+    if (! _singleserver) {
+      _s2 = new CMserver(2, this);
+      assert(_s2);
+    }
+    _arrival = new CArrival(this);
+    assert(_arrival);
+
+    setSignalMask(true);
+    _s1->start();
+    setSignalMask(false);
+
+    if (_s2) {
+      //wait for this thread to block before starting next thread
+      initThreadSync();
+      setSignalMask(true);
+      _s2->start();
+      setSignalMask(false);
+    }
+
+    //wait for this thread to block before starting next thread
+    //initThreadSync();
+    setSignalMask(true);
+    _arrival->start();
+    setSignalMask(false);
+
+    //unblock all signals after the threads are started
+    //setSignalMask(false);
+    
+    _arrival->join();
+    _s1->join();
+
+    if (_s2) {
+      _s2->join();
+    }
+}
+
+/*!
+  Initializes the thread synchronization.
+*/
+void CMm2::initThreadSync()
+{
+  printf("initThreadSync: Before grabbing mutex\n");
+  CMutexLocker m(&_mutex);
+  printf("initThreadSync: After grabbing mutex\n");
+  while (! _initThreadBlocked) {
+    printf("initThreadSync: Waiting on condition\n");
+    _initThreadCond.wait(&_mutex);
+    printf("initThreadSync: After waiting condition\n");
+  }
+  _initThreadBlocked = false;
+}
+
+
+/*!
+  Inserts the customer to the queue and wakes up the
+  waiting threads
+*/
+void CMm2::insertCustomer(CCustomer c)
+{
+  CMutexLocker m(&_mutex);
+  _customerList.push_back(c);
+  _cond.notifyAll();
+}
+
+CCustomer CMm2::getCustomer()
+{
+  printf("getCustomer called\n");
+  CMutexLocker m(&_mutex);
+  while (_customerList.empty()) {
+    if (! _initThreadBlocked) {
+      _initThreadBlocked = true;
+      _initThreadCond.notify();
+    }
+    _cond.wait(&_mutex);
+  }
+  CCustomer c = _customerList.front();
+  _customerList.pop_front();
+  return c;
+}
+
+/*!
+  Print the parameters
+*/
+void CMm2::printParams() const
+{
+  string system = (_singleserver) ? "M/M/1" : "M/M/2";
+  string distr = (_dtype == DistExp) ? "exp" : "det";
+
+  string s("\nParameters:\n");
+  s += string("\tlambda = ") + CUtil::getString(_lambda) + string("\n");
+  s += string("\tmu = ") + CUtil::getString(_mu) + string("\n");
+  s += string("\tsystem = ") + system + string("\n");
+  s += string("\tseed = ") + CUtil::getString(_seed) + string("\n");
+  s += string("\tnumber = ") + CUtil::getString(_ncustomer) + string("\n");
+  s += string("\tdistribution = ") + distr + string("\n");
+  
+  CUtil::writeOutputLn(s);      
+}
+
+/*!
+  Initializes the random generator
+*/    
+void CMm2::initRandom(long l_seed)
+{
+  if (l_seed == 0L) {
+    time_t localtime=(time_t)0;
+    time(&localtime);
+    srand48((long)localtime);
+  } else {
+    srand48(l_seed);
+  }
+}
+
+/*!
+  Returns the interval
+*/
+int CMm2::getInterval(int exponential, double rate)
+{
+  if (exponential) {
+    double dval=(double)drand48();
+    int ival = exponentialInterval(dval, rate);
+
+    if (ival < 1) {
+      ival = 1;
+    } else if (ival > 10000) {
+      ival = 10000;
+    }
+    return ival;
+  } else {
+    double millisecond=((double)1000)/rate;
+    return (int)(round(millisecond));
+  }
+}
+
+/*!
+  Returns the exponential interval
+*/
+int CMm2::exponentialInterval(double dval, double rate)
+{
+  return 0;
+}
+
+/*!
+  Initialize the signal mask
+*/
+void CMm2::initSignalMask()
+{
+  sigemptyset (&_signal_mask);
+  sigaddset (&_signal_mask, SIGINT);
+  sigaddset (&_signal_mask, SIGTERM);
+}
+
+/*!
+  Sets the signal mask.
+  Main thread calls this method with true argument to
+  block all the signals of interest so that threads will
+  inherit them prior to creating all threads. Once the threads
+  are created, they are unblocked by calling this methid with
+  false parameter.
+*/
+void CMm2::setSignalMask(bool block) const
+{
+  int rc = 0;
+  if (block) {
+    rc = pthread_sigmask(SIG_BLOCK, &_signal_mask, NULL);
+  } else {
+    rc = pthread_sigmask(SIG_UNBLOCK, &_signal_mask, NULL);
+  }
+  if (0 != rc) {
+    string msg = "Call to pthread_sigmask returned error ";
+    msg += CUtil::getString(msg);
+    C_THROW(msg);
+  }
+}
+
+//-----------------------------------------------------------------------------
+CMm2* CMm2::_instance = NULL;
+
+

@@ -1,0 +1,4 @@
+#!/bin/csh -f
+
+~csci551b/bin/bsubmit config -set email=sanjaysn@usc.edu
+~csci551b/bin/bsubmit upload -event merlot.usc.edu_9996_1128715191_13 -file hw4.tar.gz

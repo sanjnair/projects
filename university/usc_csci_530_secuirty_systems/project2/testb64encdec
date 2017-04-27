@@ -1,0 +1,14 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw2
+
+#
+# for the following commands, each correct answer gets 1 point
+#
+foreach f (0 2 4 6 8)
+    echo "===> $srcdir/f$f"
+    ./hw2 enc-base64 $srcdir/f$f | ./hw2 dec-base64 > f$f.dat
+    diff $srcdir/f$f f$f.dat
+end
+/bin/rm -f f?.dat
+

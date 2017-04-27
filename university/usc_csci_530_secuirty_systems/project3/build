@@ -1,0 +1,16 @@
+#!/bin/csh -f
+
+if(-f hw4.tar) then
+  /bin/rm -rf hw4.tar
+endif
+
+make clean
+make smartcard
+make hw4
+
+make clean
+make
+
+tar cvf hw4.tar Makefile README *.c *.cc *.h
+gzip hw4.tar
+

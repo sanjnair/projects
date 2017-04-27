@@ -1,0 +1,19 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw4
+
+#
+# (A1)
+# for the following commands, each correct answer gets 1 point
+# "diff" command should produce nothing
+#
+/bin/rm -f f?.sign
+foreach f (0 1 2 3 4 5 6 7 8 9)
+  echo "===> $srcdir/f$f"
+  ./hw4 sign -so=./libhw4sc.so $srcdir/f$f > f$f.sign
+  diff $srcdir/f$f.sign f$f.sign
+end
+
+/bin/rm -f f?.sign
+
+

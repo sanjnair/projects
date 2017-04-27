@@ -1,0 +1,20 @@
+#!/bin/csh -f
+
+/bin/rm -f f*.hex
+set srcdir=/auto/home-scf-22/csci530/public/hw1
+
+foreach f (0 1 2 3 4 5 6 7 8 9)
+  echo "===> $srcdir/f$f"
+  ./hw1 hexdump $srcdir/f$f > f$f.hex
+  diff $srcdir/f$f.hex f$f.hex
+end
+
+/bin/rm -f f*.hex
+foreach f (0 1 2 3 4)
+  echo "===> $srcdir/f$f"
+  cat $srcdir/f$f | ./hw1 hexdump > f$f.hex
+  diff $srcdir/f$f.hex f$f.hex
+end
+
+/bin/rm -f f*.hex
+

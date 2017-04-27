@@ -1,0 +1,85 @@
+/***************************************************************************
+**    Sun Aug 27 2006
+**    (C) 2006 by Sanjay Nair
+**    sanjaysn <at> usc <dot> edu
+****************************************************************************/
+
+#ifndef CMM2_H
+#define CMM2_H
+
+#include <list>
+#include <signal.h>
+
+#include "cglobal.h"
+#include "ccustomer.h"
+#include "cmutexlocker.h"
+#include "cwaitcondition.h"
+#include "carrival.h"
+#include "cmserver.h"
+#include "cqueue.h"
+                 
+class CMm2 : public CQueue
+{
+public:
+  static CMm2 *getInstance();
+  static void releaseInstance();
+  virtual ~CMm2();
+
+  void start(
+    double lambda, double mu, long seed, uint qsize,
+    uint ncustomer, DistType dtype, bool singleserver);
+  void stop();
+
+  virtual void insertCustomer(CCustomer c);
+  virtual CCustomer getCustomer();
+  virtual int getInterval(int exponential, double rate);
+  virtual void printTimeline(long sTime, long eTime, const string &msg);
+
+  virtual double getLambda() const;
+  virtual double getMu() const;
+  virtual long getSeed() const;
+  virtual uint getQSize() const;
+  virtual uint getNumCustomer() const;
+  virtual DistType getDistType() const;
+  virtual bool isSingleServer() const;
+  
+private:
+  CMm2();
+  CMm2(const CMm2 &other);
+  CMm2 &operator=(const CMm2 &other);
+
+  void cleanup();
+  void startSimulation();
+  void printParams() const;
+  void initRandom(long l_seed);
+  int exponentialInterval(double dval, double rate);
+  void initThreadSync();
+  void initSignalMask();
+  void setSignalMask(bool block) const;
+  
+  bool _stopFlag;
+  double _lambda;
+  double _mu;
+  long _seed;
+  uint _qsize;
+  uint _ncustomer;
+  DistType _dtype;
+  bool _singleserver;
+
+  bool _initThreadBlocked;
+  CWaitCondition _initThreadCond;
+  
+  CArrival *_arrival;
+  CMserver *_s1;
+  CMserver *_s2;
+  std::list<CCustomer> _customerList;
+  
+  CMutex _mutex;
+  CWaitCondition _cond;
+  sigset_t _signal_mask;
+
+  static CMm2 *_instance;
+  
+};
+
+#endif //CMM2_H

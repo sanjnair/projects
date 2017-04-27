@@ -1,0 +1,49 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw4
+
+#
+# (D1)
+# for the following commands, each correct answer gets 1 point
+# please use "yesnomaybe" as the passphrase for all tests here
+# "diff" command should produce nothing
+#
+# if there is a difference, do (replace $f with the correct
+#         number):
+#
+#     diff $srcdir/f$f.1.hex f$f.hex
+#
+/bin/rm -f f?.enc f?.hex
+echo "----------------------------------------------"
+echo "passphrase = yesnomaybe"
+echo "----------------------------------------------"
+foreach f (0 2 4 6 8)
+  echo "===> $srcdir/f$f"
+  ./hw4 enc -so=./libhw4sc.so $srcdir/f$f > f$f.enc
+  ~csci530/bin/hexdump f$f.enc > f$f.hex
+  diff $srcdir/f$f.1.enc f$f.enc
+end
+
+#
+# (D2)
+# for the following commands, each correct answer gets 1 point
+# please use "tomorrow" as the passphrase for all tests here
+# "diff" command should produce nothing
+#
+# if there is a difference, do (replace $f with the correct
+#         number):
+#
+#     diff $srcdir/f$f.2.hex f$f.hex
+#
+/bin/rm -f f?.enc f?.hex
+echo "----------------------------------------------"
+echo "passphrase = tomorrow"
+echo "----------------------------------------------"
+foreach f (1 3 5 7 9)
+  echo "===> $srcdir/f$f"
+  ./hw4 enc -so=./libhw4sc.so $srcdir/f$f > f$f.enc
+  ~csci530/bin/hexdump f$f.enc > f$f.hex
+  diff $srcdir/f$f.2.enc f$f.enc
+end
+/bin/rm -f f?.des f?.hex
+

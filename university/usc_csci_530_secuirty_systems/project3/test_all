@@ -1,0 +1,49 @@
+#!/bin/csh -f
+
+echo "*************************************************"
+echo "1. running test_secret"
+./test_secret
+
+
+echo "*************************************************"
+echo "2. running test_sign"
+./test_sign
+
+
+echo "*************************************************"
+echo "3. running test_verify"
+./test_verify
+
+echo "*************************************************"
+echo "4. running test_signverify"
+./test_signverify
+
+
+echo "*************************************************"
+echo "5. running test_desenc"
+./test_desenc
+
+
+echo "*************************************************"
+echo "6. running test_desdec"
+./test_desdec
+
+
+echo "7. *************************************************"
+echo "running test_des_encdec"
+./test_des_encdec
+
+echo "*************************************************"
+echo "8. running test_edit"
+./test_edit
+
+echo "*************************************************"
+echo "9. running test_bad"
+./test_bad
+
+echo "*************************************************"
+echo "10. running test_compatibility"
+./test_compatibility
+
+
+

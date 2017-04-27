@@ -1,0 +1,24 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw2
+set testdir=tempdir
+
+if(-d $testdir) then
+  /bin/rm -rf $testdir
+endif
+
+mkdir $testdir
+cp test* $testdir
+
+cd $testdir
+gunzip -c ../hw2.tar.gz > hw2.tar
+tar xvf hw2.tar
+make
+
+./testall
+
+make clean
+
+cd ..
+/bin/rm -rf $testdir
+

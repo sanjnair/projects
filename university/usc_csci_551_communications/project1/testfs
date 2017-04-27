@@ -1,0 +1,13 @@
+#!/bin/csh -f
+
+set port=13212
+
+./client -f nunki.usc.edu:$port /etc/passwd
+./client -f nunki.usc.edu:$port /home/scf-22/csci551b/hello
+./client -f localhost:$port /home/scf-22/csci551b/tmp/hello
+./client -f localhost:$port Makefile
+./client -f localhost:$port /usr/lsd/openssl/default/include/openssl/md5.h
+./client -f localhost:$port /usr/lsd/openssl/default/bin/openssl
+./client -f localhost:$port /etc/shadow
+./client -f localhost:$port /etc/hosts.equiv
+

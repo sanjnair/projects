@@ -1,0 +1,17 @@
+#!/bin/csh -f
+
+#
+# for these commands, just pound on the keyboard and hit
+# <ENTER> at random times and see if the program behaves
+# properly by not crashing, you don't have to look at the
+# output data
+#
+# if the program seg faults, please apply the seg fault rule
+# above
+#
+set srcdir=~csci530/public/hw4
+/bin/rm -f fout
+./hw4 verify -so=./libhw4sc.so >! f4.enc
+/bin/rm -f fout
+
+

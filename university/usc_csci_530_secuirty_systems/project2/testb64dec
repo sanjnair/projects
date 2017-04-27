@@ -1,0 +1,61 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw2
+
+echo "------------------------------"
+echo "generate base64 decoding files using openssl library"
+echo "------------------------------"
+
+foreach f (0 1 2 3 4 5 6 7 8 9)
+  echo "===> $srcdir/f$f"
+  openssl enc -d -base64 -in $srcdir/f$f.b64 > o$f.dat
+  ./hw2 dec-base64 $srcdir/f$f.b64 > f$f.dat
+  diff f$f.dat o$f.dat
+end
+
+echo "-----------------------------"
+
+/bin/rm -f f*.dat
+
+foreach f (0 1 2 3 4 5 6  7 8 9)
+  echo "===> $srcdir/f$f"
+  cat $srcdir/f$f.b64 | ./hw2 dec-base64 > f$f.dat
+  diff f$f.dat o$f.dat
+end
+
+echo "-----------------------------"
+
+/bin/rm -f f*.dat
+/bin/rm -f o*.dat
+
+
+#
+# for the following commands, each correct answer gets 1 point
+#
+foreach f (0 1 2 3 4)
+    echo "===> $srcdir/f$f"
+    ./hw2 dec-base64 $srcdir/f$f.b64 > f$f.dat
+    diff $srcdir/f$f f$f.dat
+end
+
+#
+# for the following commands, each correct answer gets 1 point
+#
+/bin/rm -f f?.dat
+foreach f (7 8 9)
+    echo "===> $srcdir/f$f"
+    cat $srcdir/f$f.b64 | ./hw2 dec-base64 > f$f.dat
+    diff $srcdir/f$f f$f.dat
+end
+
+#
+# for the following commands, each correct answer gets 1 point
+#
+/bin/rm -f f?.dat f???.dat
+foreach f (100 101)
+    echo "===> $srcdir/f$f"
+    cat $srcdir/f$f.b64 | ./hw2 dec-base64 > f$f.dat
+    diff $srcdir/f$f f$f.dat
+end
+/bin/rm -f f?.dat f???.dat
+

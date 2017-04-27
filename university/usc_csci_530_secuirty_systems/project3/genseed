@@ -1,0 +1,12 @@
+#!/bin/tcsh -f
+
+set fname="/tmp/$$"
+echo $fname
+/bin/rm -f $fname
+date > $fname
+ps auxw >> $fname
+last | head -20 >> $fname
+~csci551b/openssl/bin/openssl rand -rand $fname 1024 > /dev/null
+/bin/rm -f $fname
+/bin/ls -l ~/.rnd
+

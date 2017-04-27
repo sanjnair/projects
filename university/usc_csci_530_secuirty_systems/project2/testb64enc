@@ -1,0 +1,47 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw2
+
+echo "------------------------------"
+echo "generate base64 encoding files using openssl library"
+echo "------------------------------"
+
+foreach f (0 1 2 3 4 5 6 7 8 9)
+  echo "===> $srcdir/f$f"
+  openssl enc -e -base64 -in $srcdir/f$f > o$f.b64
+  ./hw2 enc-base64 $srcdir/f$f > f$f.b64
+  diff f$f.b64 o$f.b64
+end
+
+echo "-----------------------------"
+
+/bin/rm -f f*.b64
+
+foreach f (0 1 2 3 4 5 6  7 8 9)
+  echo "===> $srcdir/f$f"
+  cat $srcdir/f$f | ./hw2 enc-base64 > f$f.b64
+  diff f$f.b64 o$f.b64
+end
+
+echo "-----------------------------"
+
+/bin/rm -f f*.b64
+/bin/rm -f o*.b64
+
+foreach f (0 1 2 3 4 5 6)
+  echo "===> $srcdir/f$f"
+  ./hw2 enc-base64 $srcdir/f$f > f$f.b64
+  diff $srcdir/f$f.b64 f$f.b64
+end
+
+echo "-----------------------------"
+
+/bin/rm -f f*.b64
+foreach f (7 8 9)
+  echo "===> $srcdir/f$f"
+  cat $srcdir/f$f | ./hw2 enc-base64 > f$f.b64
+  diff $srcdir/f$f.b64 f$f.b64
+end
+
+/bin/rm -f f*.b64
+

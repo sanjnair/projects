@@ -1,0 +1,32 @@
+ 
+Project 2
+ 
+***********************************
+Name: Sanjay Nair
+id  : 61388
+***********************************
+
+Compilation Instructions
+---------------------------
+1. unzip Project2.tar.gz file (gunzip Project2.tar.gz)
+2. Untar Project2.tar file    (tar -xvf Project2.tar)
+3. Change directory to Project2
+3. Read the readme file
+4. run gmake on Project2 directory.
+
+Testing instructions
+--------------------
+1. Running gmake on the Project2 creates an executable named prj2 
+2. Run prj2  by
+   prj2  test0#_041su.init /dev/null > test#.init (where # is the test number).
+3. use diff -w -b  test#.init test0#_041su to see the differences.
+
+NOTE: The diff program will report the following differences:
+1. cvt instruction is added in test case 1 for expression list.
+2. Killed expressions and available expression in test case 3.
+3. CSE output in test 4 has more lines.
+
+
+Please let me know if you've any quesions.
+sanjay_sn@usc.edu
+

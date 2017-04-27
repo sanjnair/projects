@@ -1,0 +1,33 @@
+ 
+Project 1
+ 
+***********************************
+Name: Sanjay Nair
+id  : 61388
+***********************************
+
+Compilation Instructions
+---------------------------
+1. unzip Project1.tar.gz file (gunzip Project1.tar.gz)
+2. Untar Project1.tar file    (tar -xvf Project1.tar)
+3. Change directory to Project1
+3. Read the readme file
+4. run gmake on Project1 directory.
+
+Testing instructions
+--------------------
+1. Running gmake on the Project1 creates an executable named prj1
+2. Run prj1 by
+   prj1 test0#_041su.init /dev/null > test#.init (where # is the test number).
+3. use diff -w -b  test#.init test0#_041su to see the differences.
+
+NOTE: The diff program will report the following differences:
+1. Immediate Sucessor Set  - This is because it is misspelled in the original file
+2. Immediate Sucessors  - This is because it is misspelled in the original file
+3. In some cases it diffs the natural loops. Even though it is the same list (and 
+same order). 
+
+
+Please let me know if you've any quesions.
+sanjay_sn@usc.edu
+

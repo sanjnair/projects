@@ -1,0 +1,445 @@
+/***************************************************************************
+**    Sun Aug 27 2006
+**    (C) 2006 by Sanjay Nair
+**    sanjaysn <at> usc <dot> edu
+****************************************************************************/
+
+#include <signal.h>
+#include <assert.h>
+#include "cserver.h"
+#include "cutil.h"
+#include "cconst.h"
+#include "cfile.h"
+#include "cifstream.h"
+#include "cmutexlocker.h"
+
+/*!
+  Handles server timeout
+*/
+void handleAlarm(int sig_num)
+{
+  alarm(0);
+  //mask further signals
+  sigset_t mset;
+  sigset_t oset;
+  sigfillset(&mset);
+  sigprocmask(SIG_SETMASK, &mset, &oset);
+  CServer::getInstance()->stop();
+}
+
+/*!
+  Returns the instance of the CServer
+*/
+CServer* CServer::getInstance()
+{
+  if (NULL == _instance) {
+    _instance = new  CServer();
+  }
+  return _instance;
+}
+
+/*!
+  Releases the singleton instance
+*/
+void CServer::releaseInstance()
+{
+  if (NULL != _instance) {
+    delete _instance;
+    _instance = NULL;
+  }
+}
+
+/*!
+    Construts the server
+*/
+CServer::CServer() : _stopFlag(false) {}
+
+/*!
+    Deletes the server
+*/
+CServer::~CServer() {}
+
+/*!
+  Outputs the banner message
+*/
+void CServer::outputBanner(string host) {
+
+  string msg  = "\n-----------------------------------------\n";
+  msg        += "Server starting at '";
+  msg        += host;
+  msg        += "'\n(timeout = ";
+  msg        += CUtil::getString(_tout);
+  msg        += "s, Delay = ";
+  msg        += CUtil::getString(_delay);
+  msg        += "s, Port = ";
+  msg        += CUtil::getString(_port);
+  msg        += ", Rcv Timeout = ";
+  msg        += CUtil::getString(CConst::RECV_TIMEOUT);
+  msg        += ")";
+  msg        += "\n-----------------------------------------\n";
+  CUtil::writeOutputLn(msg);
+}
+
+/*!
+  Starts the server
+*/
+void CServer::start(int timeout, int delay, uint16_t port)
+{
+  _tout = timeout;
+  _delay = delay;
+  _port = port;
+
+  string hostName = CAbstractSocket::getHostName();
+  outputBanner(hostName);
+  
+  //string ip = CAbstractSocket::getSystemIp();
+  string ip;  //connect to all interface
+  //setup the alarm
+  signal(SIGALRM, handleAlarm);
+  alarm(timeout);
+  
+  _tcpServer.start(ip, _port, this);
+}
+
+/*!
+  stops the server
+*/
+void CServer::stop()
+{
+  CUtil::writeOutputLn("Please wait while server shutting down...");
+
+  CMutexLocker m(&_mutex);
+  _stopFlag = true;
+  _tcpServer.stop();
+  CUtil::writeOutputLn("Shutdown of TCP server is complete.");
+
+  if (_connList.size() >0) {
+    CUtil::writeOutputLn("Shutting down waiting threads ");
+
+    for (uint i=0; i<_connList.size(); i++) {
+      _connList[i]->stop();
+      _connList[i]->join();
+    }
+  }
+  cleanup();
+  CUtil::writeOutputLn("Server shutdown complete.");
+}
+
+/*!
+  Notifies new connection
+*/
+void CServer::notifyNewConn(int newSocket, struct sockaddr_in &addr)
+{
+  CUtil::writeRecdMsg(CAbstractSocket::getIp(addr),
+                      CAbstractSocket::getPort(addr));
+
+  CServerConn *conn = NULL;
+
+  CMutexLocker m(&_mutex);
+  if (! _stopFlag) {
+    //cleanup the connections that already completed.
+    //solaris bombs on this line!
+
+    /*std::vector<CServerConn*>::const_iterator it;
+    for (it=_connList.begin(); it != _connList.end(); ++it) {
+      conn = *it;
+      assert (conn != NULL);
+      if (! conn->isRunning()) {
+        delete conn;
+        _connList.erase(it);
+        --it;
+      }
+    }*/
+
+    conn = new CServerConn(newSocket, _delay);
+    assert (conn != NULL);
+    _connList.push_back(conn);
+    conn->start();
+  }
+}
+
+/*!
+  Cleans up the server
+*/
+void CServer::cleanup()
+{
+  for (uint i=0; i<_connList.size(); i++) {
+    delete _connList[i];
+  }
+  _connList.clear();
+}
+
+CServer* CServer::_instance = NULL;
+//-----------------------------------------------------------------------------
+
+/*!
+  Creates a new Server Connection
+*/
+CServerConn::CServerConn(int socket, int delay)
+  : _socket(socket), _delay(delay), _stopFlag(false) {}
+
+CServerConn::~CServerConn() {}
+
+/*!
+  Returns true if the stop flag is set
+*/
+bool CServerConn::isStopflagSet()
+{
+    CMutexLocker m(&_mutex);
+    return _stopFlag;
+}
+
+/*!
+  Starts the connection activities
+*/
+void CServerConn::run()
+{
+  if (! isStopflagSet()) {
+    try {
+      CTcpSocket sock(_socket);
+      uint16_t reqType = 0;
+      uint32_t dataSize = 0;
+
+      try {
+        getHeaderData(sock, reqType, dataSize);
+      } catch (CException &ex) {
+        sendErrorReply(sock);
+        throw ex;
+      }
+
+      if(! isStopflagSet()) {
+        if (CConst::ADR_REQ == reqType) {
+          handleAddrReq(sock, dataSize);
+        
+        } else if (CConst::FSZ_REQ == reqType) {
+          handleFileSizeReq(sock, dataSize);
+      
+        } else if (CConst::GET_REQ == reqType) {
+          handleGetReq(sock, dataSize);
+        
+        } else {
+          sendErrorReply(sock);
+        }
+      }
+    } catch(CException &e) {
+      CUtil::writeError(e.getMessage());
+    } catch (...) {
+      CUtil::writeError("CServerConn: Unexpected Exception");
+    }
+  }
+}
+
+/*!
+  Stops the connection
+*/
+void CServerConn::stop()
+{
+  CMutexLocker m(&_mutex);
+  _stopFlag = true;
+  if (0 != _delay) {
+    _waitCond.notify();
+  }
+}
+
+/*!
+    Handles the address request
+*/
+void CServerConn::handleAddrReq(CTcpSocket &sock, uint32_t size)
+{
+  string hname = sock.receiveStrFrom(size, CConst::RECV_TIMEOUT);
+  string ip;
+
+  uint32_t len = 0;
+  uint16_t reply = CConst::ADR_FAIL;
+
+  try {
+    ip = CAbstractSocket::getIp(hname);
+    len = ip.length();
+    reply = CConst::ADR_RPLY;
+  } catch (CException &) {}
+
+  CharBuffer buf;
+  CAbstractSocket::addToBuffer(buf, reply);
+  CAbstractSocket::addToBuffer(buf, len);
+
+  if (CConst::ADR_RPLY == reply) {
+    CAbstractSocket::addToBuffer(buf, ip);
+  }
+
+  waitForDelay();
+  sock.sendTo(buf);
+}
+
+/*!
+    Handles the File Size request
+*/
+void CServerConn::handleFileSizeReq(CTcpSocket &sock, uint32_t size)
+{
+  string path = sock.receiveStrFrom(size, CConst::RECV_TIMEOUT);
+  uint16_t reply = CConst::FSZ_FAIL;
+  uint32_t len = 0;
+
+  string sFileSize;
+  CFile file(path);
+  if (file.exists(path)) {
+    sFileSize = CUtil::getString(file.size());
+    len = sFileSize.length();
+    reply = CConst::FSZ_RPLY;
+  }
+
+  CharBuffer buf;
+  CAbstractSocket::addToBuffer(buf, reply);
+  CAbstractSocket::addToBuffer(buf, len);
+
+  if (CConst::FSZ_RPLY == reply) {
+    CAbstractSocket::addToBuffer(buf, sFileSize);
+  }
+
+  waitForDelay();
+  sock.sendTo(buf);
+}
+
+/*!
+    Handles the Get request
+*/
+void CServerConn::handleGetReq(CTcpSocket &sock, uint32_t size)
+{
+  string path = sock.receiveStrFrom(size, CConst::RECV_TIMEOUT);
+  uint32_t len = 0;
+  bool sendError = true;
+  
+  CFile file(path);
+  if (file.exists(path) && file.isFile()) {
+    long fileSize = file.size();
+    len = static_cast<uint32_t>(fileSize);
+    CharBuffer buf;
+
+    if (0 == fileSize) {
+      CAbstractSocket::addToBuffer(buf, CConst::GET_RPLY);
+      CAbstractSocket::addToBuffer(buf, len);
+      waitForDelay();
+      sock.sendTo(buf);
+    } else {
+      CIfStream stream(&file, true);
+      try {
+        stream.open();
+        sendError  = false;
+
+        CAbstractSocket::addToBuffer(buf, CConst::GET_RPLY);
+        CAbstractSocket::addToBuffer(buf, len);
+        waitForDelay();
+        sock.sendTo(buf);
+
+        char tmpArray[FILE_BUF_SIZE];
+        while (stream.isGood() && (! stream.isEof())) {
+          if (isStopflagSet()) {
+              break;
+          }
+          int tmpSize = stream.read(tmpArray, FILE_BUF_SIZE);
+
+          if (tmpSize <= 0) {
+            string msg = string("Unable to read the file ");
+            msg += path;
+            C_THROW(msg);
+          }
+          convertToBuffer(tmpArray, tmpSize, buf);
+
+          if (isStopflagSet()) {
+              break;
+          }
+          sock.sendTo(buf);
+        }
+        stream.close();
+      } catch(CException &e) {
+        if (stream.isOpened()) {
+          stream.close();
+          CUtil::writeError(e.getMessage());
+        }
+      }
+    }
+  }
+
+  if (sendError) {
+    CharBuffer buf;
+    CAbstractSocket::addToBuffer(buf, CConst::GET_FAIL);
+    CAbstractSocket::addToBuffer(buf, len);
+    waitForDelay();
+    sock.sendTo(buf);
+  }
+}
+
+
+/*!
+  Returns the header data
+*/
+void CServerConn::getHeaderData(
+  CTcpSocket &sock, uint16_t &req, uint32_t &size) const
+{
+  CharBuffer buffer;
+
+  buffer = sock.receiveFrom(2,CConst::CConst::RECV_TIMEOUT);
+  CAbstractSocket::getFromBuffer(buffer, req);
+  errorIfInvalidRequest(req);
+
+  buffer = sock.receiveFrom(4,CConst::CConst::RECV_TIMEOUT);
+  CAbstractSocket::getFromBuffer(buffer, size);
+
+  if (size > CConst::MAX_CLIENT_REQ_SIZE)
+  {
+    string msg = "Size field from client is greater than max size ";
+    msg += CUtil::getString(CConst::MAX_CLIENT_REQ_SIZE);
+    C_THROW(msg);
+  }
+  
+}
+
+/*!
+  Sends the error reply back to the client
+*/
+void CServerConn::sendErrorReply(CTcpSocket &sock)
+{
+  uint32_t len = 0;
+  CharBuffer buf;
+  CAbstractSocket::addToBuffer(buf, CConst::ALL_FAIL);
+  CAbstractSocket::addToBuffer(buf, len);
+  waitForDelay();
+  sock.sendTo(buf);
+}
+
+/*!
+  Waits for delay
+*/
+void CServerConn::waitForDelay()
+{
+  if (0 != _delay) {
+    CMutexLocker m(&_mutex);
+    _waitCond.wait(&_mutex, (_delay * 1000));
+  }
+}
+
+/*!
+  Converts the char* to buffer
+*/
+void CServerConn::convertToBuffer(
+  const char *array, int arrayLen, CharBuffer &buf) const
+{
+  buf.clear();
+  for (int i=0; i<arrayLen; i++) {
+    buf.push_back(array[i]);
+  }
+}
+
+/*!
+  Throws exception if the reply is invalid
+*/
+void CServerConn::errorIfInvalidRequest(uint16_t req) const
+{
+  if ((req != CConst::ADR_REQ) && (req != CConst::FSZ_REQ) &&
+      (req != CConst::GET_REQ))  {
+
+      string msg = string("Invalid request code ");
+      msg += CUtil::getString(req);
+      C_THROW(msg);
+  }
+}
+

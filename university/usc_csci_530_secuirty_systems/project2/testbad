@@ -1,0 +1,38 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw2
+
+./hw2 dec-base64 $srcdir/f200.b64
+./hw2 dec-base64 $srcdir/f201.b64
+./hw2 dec-base64 $srcdir/f202.b64 > /dev/null
+
+echo "-------------------------------------"
+echo "pound the keyboard"
+echo "-------------------------------------"
+
+echo "./hw2 enc-base64 >! fout"
+./hw2 enc-base64 >! fout
+
+echo "./hw2 dec-base64 >! fout"
+./hw2 dec-base64 >! fout
+
+echo "./hw2 md5 >! fout"
+./hw2 md5 >! fout
+
+echo "./hw2 sha1 >! fout"
+./hw2 sha1 >! fout
+
+
+echo "-------------------------------------"
+echo "type in a long random passphrase, at least 80 chars" 
+echo "-------------------------------------"
+
+echo "./hw2 enc-des $srcdir/f0 >! fout"
+./hw2 enc-des $srcdir/f0 >! fout
+
+./hw2 dec-des $srcdir/f0.des.1 >! fout
+
+#------------------------------------------
+/bin/rm -f fout
+#------------------------------------------
+

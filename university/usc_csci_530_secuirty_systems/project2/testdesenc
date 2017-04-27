@@ -1,0 +1,62 @@
+#!/bin/csh -f
+
+set srcdir=~csci530/public/hw2
+
+#--------------------------------------------------------
+
+# for the following commands, each correct answer gets 1 point
+# please use "yesnomaybe" as the passphrase for all tests here
+#
+# if there is a difference, do (replace $f with the correct
+#         number):
+#
+#     diff $srcdir/f$f.des.1.hex f$f.des.hex
+#
+# if the only difference for the hexdump is in the last line,
+#         deduct a total of 2 points for not handling the last
+#         last 8 bytes properly
+#
+
+echo "---------------------------"
+echo "password --> yesnomaybe"
+echo "---------------------------"
+
+foreach f (0 1 2 3 4 5 6 7 8 9)
+echo "===> $srcdir/f$f"
+./hw2 enc-des $srcdir/f$f > f$f.des
+~csci530/bin/hexdump f$f.des > f$f.des.hex
+diff $srcdir/f$f.des.1 f$f.des
+end
+
+#--------------------------------------------------------
+/bin/rm -f f?.des f?.des.hex
+#--------------------------------------------------------
+
+# for the following commands, each correct answer gets 1 point
+# please use "tomorrow" as the passphrase for all tests here
+#
+# if there is a difference, do (replace $f with the correct
+#         number):
+#
+#     diff $srcdir/f$f.des.2.hex f$f.des.hex
+#
+# if the only difference for the hexdump is in the last line,
+#         deduct a total of 2 points for not handling the last
+#         last 8 bytes properly
+#
+
+echo "---------------------------"
+echo "password --> tomorrow"
+echo "---------------------------"
+
+foreach f (0 1 2 3 4 5 6 7 8 9)
+    echo "===> $srcdir/f$f"
+    ./hw2 enc-des $srcdir/f$f > f$f.des
+    ~csci530/bin/hexdump f$f.des > f$f.des.hex
+    diff $srcdir/f$f.des.2 f$f.des
+end
+
+#--------------------------------------------------------
+/bin/rm -f f?.des f?.des.hex
+#--------------------------------------------------------
+

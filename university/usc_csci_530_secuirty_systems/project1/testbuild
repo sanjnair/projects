@@ -1,0 +1,23 @@
+#!/bin/csh -f
+
+set testdir=/auto/home-scf-27/sanjaysn/cs530/hw1/xyzzy
+
+if(-d $testdir) then
+  /bin/rm -rf $testdir
+endif
+
+mkdir $testdir
+cp testhex testenc testdec testencdec testbad runtest $testdir
+
+cd $testdir
+gunzip -c ../hw1.tar.gz > hw1.tar
+tar xvf hw1.tar
+make
+
+./runtest
+
+make clean
+
+cd ..
+/bin/rm -rf $testdir
+

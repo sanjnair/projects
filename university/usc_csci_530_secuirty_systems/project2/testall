@@ -1,0 +1,47 @@
+#!/bin/csh -f
+
+echo "======================="
+echo "(A) running base64 encoding test"
+echo "======================="
+./testb64enc
+
+echo "======================="
+echo "(B) running base64 decoding test"
+echo "======================="
+./testb64dec
+
+echo "======================="
+echo "(C) running enc-dec test"
+echo "======================="
+./testb64encdec
+
+echo "======================="
+echo "(D) running md5 test"
+echo "======================="
+./testmd5
+
+echo "======================="
+echo "(E) running sha1 test"
+echo "======================="
+./testsha1
+
+echo "======================="
+echo "(F) running des encoding test"
+echo "======================="
+./testdesenc
+
+echo "======================="
+echo "(G) running des decoding test"
+echo "======================="
+./testdesdec
+
+echo "======================="
+echo "(H) running des encoding-decoding test"
+echo "======================="
+./testdesencdec
+
+echo "======================="
+echo "(I) running BAD tests" 
+echo "======================="
+./testbad
+
