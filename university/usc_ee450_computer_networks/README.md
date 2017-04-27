@@ -2,9 +2,7 @@ EE 450 Project - summer 2006
 -----------------------------
 
 A. Name:          Sanjay Nair
-B. Student Id:    7463861388
-
-C. Introduction
+B. Introduction
 ---------------
 This assignment is written using C++ (using standard C++ STL libraries). In this assignment, I used the socket API to program to the given project spec. All features required by the project spec have been implemented. The implementation package consists of 4 packages, 3 executables and 1 shared library. The shared library contains common code that is shared by all executable projects. 
 
