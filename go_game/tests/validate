@@ -1,0 +1,24 @@
+#!/bin/bash
+GAME_EXE=../cpp/game
+GOLDEN_FOLDER=./golden
+
+rm *.out
+
+declare -a arr=("Capture1" "Capture2" "Capture3" "Capture4" "Capture5" "Capture6" "Capture7" "Capture8" "LargeCapture" "NoCapture1" "SelfCapture1" "SelfCapture2" "SelfCapture3" "InvalidGame" "SimpleCapture" "SimpleRegionCapture" )
+
+for i in "${arr[@]}"
+do
+   echo ""
+   echo "$i"
+   eval "$GAME_EXE" "$i.csv"
+
+   result=$(diff -y -W 72 "$i.csv.out" "$GOLDEN_FOLDER/$i.out")
+
+   if [ $? -eq 0 ]
+   then
+       echo "files are the same"
+    else
+       echo "files are different"
+       echo "$result"
+    fi
+done
